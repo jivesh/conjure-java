@@ -20,6 +20,7 @@ import com.palantir.conjure.java.util.TypeFunctions;
 import com.palantir.conjure.spec.AliasDefinition;
 import com.palantir.conjure.spec.ArgumentDefinition;
 import com.palantir.conjure.spec.ConjureDefinition;
+import com.palantir.conjure.spec.ConstantDefinition;
 import com.palantir.conjure.spec.EnumDefinition;
 import com.palantir.conjure.spec.ExternalReference;
 import com.palantir.conjure.spec.FieldDefinition;
@@ -122,6 +123,11 @@ public final class SafetyEvaluator {
         private TypeDefinitionSafetyVisitor(Map<TypeName, TypeDefinition> definitionMap, Set<TypeName> inProgress) {
             this.inProgress = inProgress;
             this.fieldVisitor = new FieldSafetyVisitor(definitionMap, this);
+        }
+
+        @Override
+        public Optional<LogSafety> visitConstant(ConstantDefinition value) {
+            return ENUM_SAFETY;
         }
 
         @Override

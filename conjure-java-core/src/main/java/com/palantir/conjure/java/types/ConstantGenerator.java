@@ -52,8 +52,11 @@ public final class ConstantGenerator {
                 .addAnnotation(Immutable.class)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addFields(typeDefs.stream()
-                        .map(typeDef -> FieldSpec.builder(thisClass, thisClass.simpleName())
+                        .map(typeDef -> FieldSpec.builder(
+                                        typeDef.getType().getClass(),
+                                        typeDef.getTypeName().getName())
                                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
+                                .initializer("$S", typeDef.getValue())
                                 .build())
                         .collect(Collectors.toList()))
                 .build();

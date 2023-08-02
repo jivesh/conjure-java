@@ -40,21 +40,23 @@ public final class ObjectGenerator implements Generator {
     @Override
     public Stream<JavaFile> generate(ConjureDefinition definition) {
         List<TypeDefinition> types = definition.getTypes();
-        List<ConstantDefinition> constants = types.stream()
-                .filter(typeDefinition -> typeDefinition.accept(TypeDefinitionVisitor.IS_CONSTANT))
-                .map(typeDefinition -> typeDefinition.accept(TypeDefinitionVisitor.CONSTANT))
-                .collect(Collectors.toList());
         types = types.stream()
                 .filter(typeDefinition -> !typeDefinition.accept(TypeDefinitionVisitor.IS_CONSTANT))
                 .collect(Collectors.toList());
-        JavaFile constantFile = ConstantGenerator.generateConstantType(constants, options);
         Map<TypeName, TypeDefinition> typesMap = TypeFunctions.toTypesMap(types);
         TypeMapper typeMapper = new TypeMapper(typesMap, options);
         SafetyEvaluator safetyEvaluator = new SafetyEvaluator(typesMap);
         List<JavaFile> javaFiles = types.stream()
                 .map(typeDef -> generateInner(typeMapper, safetyEvaluator, typesMap, typeDef))
                 .collect(Collectors.toList());
-        // javaFiles.add(constantFile);
+        List<ConstantDefinition> constants = types.stream()
+                .filter(typeDefinition -> typeDefinition.accept(TypeDefinitionVisitor.IS_CONSTANT))
+                .map(typeDefinition -> typeDefinition.accept(TypeDefinitionVisitor.CONSTANT))
+                .collect(Collectors.toList());
+        if (constants.size() > 0) {
+            JavaFile constantFile = ConstantGenerator.generateConstantType(constants, options);
+            javaFiles.add(constantFile);
+        }
         return javaFiles.stream();
     }
 

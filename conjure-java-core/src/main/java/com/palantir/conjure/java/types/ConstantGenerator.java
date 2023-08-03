@@ -24,6 +24,7 @@ import com.palantir.conjure.java.util.Packages;
 import com.palantir.conjure.spec.ConstantDefinition;
 import com.palantir.conjure.spec.TypeName;
 import com.palantir.logsafe.Safe;
+import com.palantir.ri.ResourceIdentifier;
 import com.palantir.tokens.auth.BearerToken;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
@@ -66,13 +67,15 @@ public final class ConstantGenerator {
 
     public static Class<?> convertToClass(String className) {
         switch (className) {
-            case "STRING":
             case "RID":
+                return ResourceIdentifier.class;
+            case "STRING":
                 return String.class;
             case "DATETIME":
                 return Date.class;
-            case "INTEGER":
             case "BINARY":
+                return Byte.class;
+            case "INTEGER":
                 return Integer.class;
             case "DOUBLE":
                 return Double.class;

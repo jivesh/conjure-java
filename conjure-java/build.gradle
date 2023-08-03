@@ -21,6 +21,7 @@ mainClassName = 'com.palantir.conjure.java.cli.ConjureJavaCli'
 dependencies {
     implementation project(':conjure-java-core')
     implementation 'info.picocli:picocli'
+    implementation 'com.palantir.conjure:conjure:4.38.0'
     runtimeOnly 'org.slf4j:slf4j-simple'
 
     testImplementation 'org.assertj:assertj-core'

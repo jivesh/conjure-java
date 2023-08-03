@@ -23,6 +23,7 @@ conjure {
 }
 
 dependencies {
+    implementation 'com.palantir.conjure:conjure:4.38.0'
     conjure 'com.palantir.conjure.verification:verification-server-api'
     testCases 'com.palantir.conjure.verification:verification-server-test-cases'
     verifier "com.palantir.conjure.verification:verification-server::${osClassifier}@tgz"

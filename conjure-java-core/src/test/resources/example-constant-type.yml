@@ -1,0 +1,7 @@
+types:
+  definitions:
+    default-package: com.palantir.constant
+    constants:
+      ConstantString:
+        value: hello
+        type: string

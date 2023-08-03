@@ -24,6 +24,7 @@ dependencies {
     implementation 'com.palantir.safe-logging:logger'
     implementation 'com.palantir.tracing:tracing-undertow'
     implementation 'org.slf4j:slf4j-api'
+    implementation 'com.palantir.conjure:conjure:4.38.0'
 
     testImplementation 'com.squareup.okhttp3:okhttp'
     testImplementation 'com.palantir.safe-logging:preconditions-assertj'

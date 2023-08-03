@@ -8,6 +8,7 @@ dependencies {
     implementation 'com.google.guava:guava'
     implementation 'com.palantir.common:streams'
     implementation 'com.palantir.safe-logging:safe-logging'
+    implementation 'com.palantir.conjure:conjure:4.38.0'
 
     testImplementation 'org.assertj:assertj-core'
     testImplementation 'org.junit.jupiter:junit-jupiter'

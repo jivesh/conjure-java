@@ -25,6 +25,7 @@ conjure {
 }
 
 dependencies {
+    implementation 'com.palantir.conjure:conjure:4.38.0'
     testCases 'com.palantir.conjure.verification:verification-client-test-cases'
     conjure 'com.palantir.conjure.verification:verification-client-api'
     verifier "com.palantir.conjure.verification:verification-client::${osClassifier}@tgz"

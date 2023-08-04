@@ -5,3 +5,15 @@ types:
       ConstantString:
         value: hello
         type: string
+      ConstantInteger:
+        value: 123
+        type: integer
+      ConstantSafeLong:
+        value: 123123123
+        type: safelong
+      ConstantBoolean:
+        value: true
+        type: boolean
+      ConstantDouble:
+        value: 123.123
+        type: double

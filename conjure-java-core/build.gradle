@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.palantir.safe-logging:logger'
     implementation 'com.palantir.safe-logging:preconditions'
     implementation 'com.palantir.human-readable-types:human-readable-types'
+    implementation 'com.palantir.conjure:conjure:4.38.0'
 
     testImplementation sourceSets.integrationInput.output
     testImplementation 'com.palantir.conjure:conjure-core'

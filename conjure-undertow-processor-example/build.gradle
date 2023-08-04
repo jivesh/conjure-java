@@ -2,6 +2,7 @@
 
 dependencies {
     implementation project(':conjure-undertow-annotations')
+    implementation 'com.palantir.conjure:conjure:4.38.0'
     annotationProcessor project(':conjure-undertow-processor')
 
     testImplementation project(':conjure-java-undertow-runtime')

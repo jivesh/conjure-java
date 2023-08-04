@@ -20,12 +20,14 @@ import com.palantir.conjure.java.Generator;
 import com.palantir.conjure.java.Options;
 import com.palantir.conjure.java.util.TypeFunctions;
 import com.palantir.conjure.spec.ConjureDefinition;
+import com.palantir.conjure.spec.ConstantDefinition;
 import com.palantir.conjure.spec.TypeDefinition;
 import com.palantir.conjure.spec.TypeName;
 import com.palantir.conjure.visitor.TypeDefinitionVisitor;
 import com.squareup.javapoet.JavaFile;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class ObjectGenerator implements Generator {
@@ -38,10 +40,27 @@ public final class ObjectGenerator implements Generator {
     @Override
     public Stream<JavaFile> generate(ConjureDefinition definition) {
         List<TypeDefinition> types = definition.getTypes();
+
+        List<ConstantDefinition> constants = types.stream()
+                .filter(typeDefinition -> typeDefinition.accept(TypeDefinitionVisitor.IS_CONSTANT))
+                .map(typeDefinition -> typeDefinition.accept(TypeDefinitionVisitor.CONSTANT))
+                .collect(Collectors.toList());
+
+        types = types.stream()
+                .filter(typeDefinition -> !typeDefinition.accept(TypeDefinitionVisitor.IS_CONSTANT))
+                .collect(Collectors.toList());
         Map<TypeName, TypeDefinition> typesMap = TypeFunctions.toTypesMap(types);
         TypeMapper typeMapper = new TypeMapper(typesMap, options);
         SafetyEvaluator safetyEvaluator = new SafetyEvaluator(typesMap);
-        return types.stream().map(typeDef -> generateInner(typeMapper, safetyEvaluator, typesMap, typeDef));
+        List<JavaFile> javaFiles = types.stream()
+                .map(typeDef -> generateInner(typeMapper, safetyEvaluator, typesMap, typeDef))
+                .collect(Collectors.toList());
+
+        if (constants.size() > 0) {
+            JavaFile constantFile = ConstantGenerator.generateConstantType(constants, options);
+            javaFiles.add(constantFile);
+        }
+        return javaFiles.stream();
     }
 
     private JavaFile generateInner(

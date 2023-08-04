@@ -22,6 +22,7 @@ dependencies {
     api 'io.undertow:undertow-core'
     // Generated code depends on ListenableFuture and immutable collections
     api 'com.google.guava:guava'
+    implementation 'com.palantir.conjure:conjure:4.38.0'
     // Recommend a higher version of wildfly (1.6.0.Final+) then the one shipped with undertow to avoid CVEs.
     runtimeOnly 'org.wildfly.common:wildfly-common'
 }

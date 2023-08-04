@@ -55,14 +55,29 @@ public final class ConstantGenerator {
                 .addAnnotation(Immutable.class)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addFields(typeDefs.stream()
-                        .map(typeDef -> FieldSpec.builder(
-                                        convertToClass(typeDef.getType().toString()),
-                                        typeDef.getTypeName().getName())
-                                .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
-                                .initializer("$S", typeDef.getValue())
-                                .build())
+                        .map(typeDef -> addValue(
+                                FieldSpec.builder(
+                                                convertToClass(typeDef.getType().toString()),
+                                                typeDef.getTypeName().getName())
+                                        .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC),
+                                typeDef.getValue(),
+                                typeDef.getType().toString()))
                         .collect(Collectors.toList()))
                 .build();
+    }
+
+    private static FieldSpec addValue(FieldSpec.Builder builder, String value, String type) {
+        switch (type) {
+            case "INTEGER":
+            case "DOUBLE":
+            case "BOOLEAN":
+                return builder.initializer("$L", value).build();
+            case "SAFELONG":
+                return builder.initializer("$T.of($L)", convertToClass(type), value)
+                        .build();
+            default:
+                return builder.initializer("$S", value).build();
+        }
     }
 
     public static Class<?> convertToClass(String className) {
